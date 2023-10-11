@@ -7,11 +7,13 @@ import com.cydeo.exception.BalanceNotSufficientException;
 import com.cydeo.model.Account;
 import com.cydeo.model.Transaction;
 import com.cydeo.repository.AccountRepository;
+import com.cydeo.repository.TransactionRepository;
 import com.cydeo.service.TransactionService;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,13 +21,16 @@ import java.util.UUID;
 public class TransactionServiceImpl implements TransactionService {
 
     private final AccountRepository accountRepository;
+    private final TransactionRepository transactionRepository;
 
-    public TransactionServiceImpl(AccountRepository accountRepository) {
+    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
+        this.transactionRepository = transactionRepository;
+
     }
 
     @Override
-    public Transaction makeTransfer(Account sender, Account receiver, BigDecimal amount, Data creationDate, String message) {
+    public Transaction makeTransfer(Account sender, Account receiver, BigDecimal amount, Date creationDate, String message) {
 
         /** If sender or receiver is null ?
          *  If sender and receiver is the same account ?
@@ -37,10 +42,16 @@ public class TransactionServiceImpl implements TransactionService {
         checkAccountOwnership(sender,receiver);
         executeBalanceAndUpdateIfRequired(amount,sender,receiver);
 
-        // makeTransfer
+        /**
+         * after all validations are completed, and money is transferred
+         * we need to create Transaction object and save/return it
+         */
 
+        Transaction transaction = Transaction.builder().amount(amount).sender(sender.getId()).receiver(receiver.getId())
+                .createDate(creationDate).message(message).build();
 
-        return null;
+        // save into the DB and return it
+        return transactionRepository.save(transaction);
     }
 
     private void executeBalanceAndUpdateIfRequired(BigDecimal amount, Account sender, Account receiver) {
@@ -95,9 +106,6 @@ public class TransactionServiceImpl implements TransactionService {
     private void findAccountById(UUID id) {
         accountRepository.findById(id);
     }
-
-
-
 
 
     @Override
