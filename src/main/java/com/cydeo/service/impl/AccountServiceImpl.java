@@ -15,7 +15,7 @@ import java.util.UUID;
 public class AccountServiceImpl implements AccountService {
 
     // inject the repository
-    AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
     public AccountServiceImpl(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
