@@ -8,17 +8,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AccountController {
 
+    // injecting the service_interface
     private final AccountService accountService;
 
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
-    // write a method to execute the code
+    // write a method to return index.html including account list information endpoint:index
     @GetMapping("/index")
     public String getIndexPage(Model model){
 
-       model.addAttribute("accountList", accountService.ListAllAccount());
+        model.addAttribute("accountList",accountService.ListAllAccount());
+
+
        return "account/index";
     }
 
