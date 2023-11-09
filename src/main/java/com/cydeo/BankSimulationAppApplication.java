@@ -18,23 +18,23 @@ public class BankSimulationAppApplication {
     public static void main(String[] args) {
         ApplicationContext container = SpringApplication.run(BankSimulationAppApplication.class, args);
 
-        // 1st step: get account and transaction service beans
-        AccountService accountService = container.getBean(AccountService.class);
-        TransactionService transactionService = container.getBean(TransactionService.class);
-
-        // 2nd step: create sender and receiver accounts using AccountService
-        Account sender = accountService.createNewAccount(BigDecimal.valueOf(70), new Date(), AccountType.CHECKING, 1L);
-        Account receiver = accountService.createNewAccount(BigDecimal.valueOf(50), new Date(), AccountType.CHECKING, 2L);
-
-        // see all available accounts
-        accountService.ListAllAccount().forEach(System.out::println);
-
-        // testing the transaction: the main functionality makeTransfer_method
-        transactionService.makeTransfer(sender,receiver,new BigDecimal(40),new Date(),"Transaction 1");
-        System.out.println(transactionService.findAllTransaction().get(0));
-
-        // see all available accounts
-        accountService.ListAllAccount().forEach(System.out::println);
+//        // 1st step: get account and transaction service beans
+//        AccountService accountService = container.getBean(AccountService.class);
+//        TransactionService transactionService = container.getBean(TransactionService.class);
+//
+//        // 2nd step: create sender and receiver accounts using AccountService
+//        Account sender = accountService.createNewAccount(BigDecimal.valueOf(70), new Date(), AccountType.CHECKING, 1L);
+//        Account receiver = accountService.createNewAccount(BigDecimal.valueOf(50), new Date(), AccountType.CHECKING, 2L);
+//
+//        // see all available accounts
+//        accountService.ListAllAccount().forEach(System.out::println);
+//
+//        // testing the transaction: the main functionality makeTransfer_method
+//        transactionService.makeTransfer(sender,receiver,new BigDecimal(40),new Date(),"Transaction 1");
+//        System.out.println(transactionService.findAllTransaction().get(0));
+//
+//        // see all available accounts
+//        accountService.ListAllAccount().forEach(System.out::println);
 
     }
 
