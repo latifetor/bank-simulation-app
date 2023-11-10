@@ -5,7 +5,12 @@ import com.cydeo.model.Account;
 import com.cydeo.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.Date;
 
 @Controller
 public class AccountController {
@@ -38,6 +43,21 @@ public class AccountController {
 
         return "account/create-account";
     }
+
+    // create a method to capture information from UI
+    // print them on the console: to see what user entering
+    // trigger createNewAccount method, create the account based the user input
+    // once user created then return back to the index.page
+
+    @PostMapping("/create")
+    public String createAccount(@ModelAttribute("account") Account account){
+        System.out.println(account);
+
+        accountService.createNewAccount(account.getBalance(),new Date(),account.getAccountType(),account.getUserId());
+
+        return "redirect:/index";
+    }
+
 
 
 }
