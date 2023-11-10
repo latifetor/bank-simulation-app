@@ -1,5 +1,7 @@
 package com.cydeo.controller;
 
+import com.cydeo.enums.AccountType;
+import com.cydeo.model.Account;
 import com.cydeo.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,5 +26,18 @@ public class AccountController {
 
        return "account/index";
     }
+
+    @GetMapping("/create-form")
+    public String getCreateForm(Model model){
+
+        //we need to provide empty account object
+        model.addAttribute("account", Account.builder().build());
+
+        //we need to provide accountType enum info for filling the dropdown options
+        model.addAttribute("accountTypes", AccountType.values());
+
+        return "account/create-account";
+    }
+
 
 }

@@ -25,6 +25,8 @@ public class BankSimulationAppApplication {
         // 2nd step: create sender and receiver accounts using AccountService
         Account sender = accountService.createNewAccount(BigDecimal.valueOf(70), new Date(), AccountType.CHECKING, 1L);
         Account receiver = accountService.createNewAccount(BigDecimal.valueOf(50), new Date(), AccountType.CHECKING, 2L);
+        Account receiver2 = accountService.createNewAccount(BigDecimal.valueOf(5000), new Date(), AccountType.CHECKING, 123L);
+        Account receiver3 = accountService.createNewAccount(BigDecimal.valueOf(7500), new Date(), AccountType.SAVING, 124L);
 
 //        // see all available accounts
 //        accountService.ListAllAccount().forEach(System.out::println);
