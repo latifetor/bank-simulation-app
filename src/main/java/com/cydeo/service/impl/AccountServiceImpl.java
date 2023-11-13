@@ -49,4 +49,13 @@ public class AccountServiceImpl implements AccountService {
         account.setAccountStatus(AccountStatus.DELETED);
 
     }
+
+    @Override
+    public void activateAccount(UUID id) {
+
+        // find the account belongs to the id
+        Account account = accountRepository.findById(id);
+
+        account.setAccountStatus(AccountStatus.ACTIVE);
+    }
 }
