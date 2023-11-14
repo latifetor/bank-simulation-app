@@ -14,55 +14,32 @@
   <div class="row">
     <div class="col-md-6">
       <div>
-        <form th:object="${transaction}"  th:action="@{/transfer}" method="post">
+        <form th:object="${transaction}" action="#">
           <div class="row">
             <div class="form-group blu-margin">
               <label for="sender" class="col-form-label">Sender</label>
               <select class="form-control" id="sender" th:field="*{sender}">
-                <option th:value="''" th:text="select"></option>
-                <option th:each="account : ${accounts}" th:value="${account.id}"
-                        th:text="${account.balance}+'-'+${account.userId}+'-'+${account.accountType.name()}"></option>
+                <option value="0">Select Account</option>
+                <option></option>
               </select>
-              <span th:if="${#fields.hasErrors('sender')}">
-                                    <ul class="alert alert-danger">
-                                        <li th:each="err :${#fields.errors('sender')}" th:text="${err}"></li>
-                                    </ul>
-                                    </span>
             </div>
 
             <div class="form-group blu-margin">
               <label for="receiver" class="col-form-label">Receiver</label>
-              <select class="form-control" id="receiver" th:field="*{receiver}">
-                <option th:value="''" th:text="select"></option>
-                <option th:each="account : ${accounts}" th:value="${account.id}"
-                        th:text="${account.balance}+'-'+${account.userId}+'-'+${account.accountType.name()}"></option>
-
+              <select class="form-control" id="receiver">
+                <option value="0">Select Account</option>
+                <option></option>
               </select>
-              <span th:if="${#fields.hasErrors('receiver')}">
-                                        <ul class="alert alert-danger">
-                                            <li th:each="err :${#fields.errors('receiver')}" th:text="${err}"></li>
-                                        </ul>
-                                    </span>
             </div>
 
             <div class="form-group blu-margin">
               <label for="amount" class="col-form-label">Amount</label>
-              <input type="text" class="form-control" id="amount" placeholder="Amount" th:field="*{amount}">
-              <span th:if="${#fields.hasErrors('amount')}">
-                                        <ul class="alert alert-danger">
-                                            <li th:each="err :${#fields.errors('amount')}" th:text="${err}"></li>
-                                        </ul>
-                                    </span>
+              <input type="text" class="form-control" id="amount" placeholder="Amount">
             </div>
 
             <div class="form-group blu-margin">
               <label for="message" class="col-form-label">Message</label>
-              <input type="text" class="form-control" id="message" placeholder="Message" th:field="*{message}">
-              <span th:if="${#fields.hasErrors('message')}">
-                                        <ul class="alert alert-danger">
-                                            <li th:each="err :${#fields.errors('message')}" th:text="${err}"></li>
-                                        </ul>
-                                    </span>
+              <input type="text" class="form-control" id="message" placeholder="Message">
             </div>
           </div>
           <div class="row">
@@ -84,16 +61,16 @@
           </tr>
           </thead>
           <tbody>
-          <tr th:each="lTransaction : ${lastTransactions}">
-            <td th:text="${lTransaction.getSender()}"></td>
-            <td th:text="${lTransaction.getReceiver()}"></td>
-            <td th:text="${lTransaction.getAmount()}"></td>
-            <td th:text="${lTransaction.getCreateDate()}"></td>
-            <td th:text="${lTransaction.getMessage()}"></td>
+          <tr >
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
           </tbody>
         </table>
-        <p class="my-5"><a th:href="@{/index}" class="btn btn-primary">Home Page</a></p>
+        <p class="my-5"><a href="#" class="btn btn-primary">Home Page</a></p>
       </div>
     </div>
   </div>
