@@ -1,11 +1,16 @@
 package com.cydeo.controller;
 
+import com.cydeo.model.Account;
 import com.cydeo.model.Transaction;
 import com.cydeo.service.AccountService;
 import com.cydeo.service.TransactionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.Date;
 
 @Controller
 public class TransactionController {
@@ -31,6 +36,21 @@ public class TransactionController {
         model.addAttribute("lastTransactions",transactionService.last10Transactions());
 
         return "transaction/make-transfer";
+    }
+
+    @PostMapping("/transfer")
+    // write a post method that takes transaction object from the UI
+    // complete the transfer and return the same page
+    public String makeTransfer(@ModelAttribute("transaction") Transaction transaction){
+
+        // having UUID of accounts but need to provide Account_object to the method
+        // need to find the Accounts based on the ID that we have and use as a parameter to complete makeTransfer method.
+        Account sender = accountService.retrieveById(transaction.getSender());
+        Account receiver = accountService.retrieveById(transaction.getReceiver());
+
+        transactionService.makeTransfer(sender,receiver,transaction.getAmount(), new Date(),transaction.getMessage());
+
+        return "redirect:/make-transfer";
     }
 
 }
