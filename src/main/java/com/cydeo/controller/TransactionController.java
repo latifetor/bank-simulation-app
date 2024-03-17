@@ -1,7 +1,7 @@
 package com.cydeo.controller;
 
-import com.cydeo.model.Account;
-import com.cydeo.model.Transaction;
+import com.cydeo.dto.AccountDTO;
+import com.cydeo.dto.TransactionDTO;
 import com.cydeo.service.AccountService;
 import com.cydeo.service.TransactionService;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ public class TransactionController {
 
         //what we need to provide to make transfer happen
         //we need to provide empty transaction object
-        model.addAttribute("transaction", Transaction.builder().build());
+        model.addAttribute("transaction", new TransactionDTO());
         //we need to provide list of all accounts
         model.addAttribute("accounts",accountService.ListAllAccount());
         //we need list of last 10 transactions to fill the table(business logic is missing)
@@ -45,7 +45,7 @@ public class TransactionController {
     @PostMapping("/transfer")
       // write a post method that takes transaction object from the UI
       // complete the transfer and return the same page
-    public String makeTransfer(@Valid @ModelAttribute("transaction") Transaction transaction, BindingResult bindingResult, Model model){
+    public String makeTransfer(@Valid @ModelAttribute("transaction") TransactionDTO transactionDTO, BindingResult bindingResult, Model model){
 
         if (bindingResult.hasErrors()){
             model.addAttribute("accounts",accountService.ListAllAccount());
@@ -54,10 +54,10 @@ public class TransactionController {
         }
         // having UUID of accounts but need to provide Account_object to the method
         // need to find the Accounts based on the ID that we have and use as a parameter to complete makeTransfer method.
-        Account sender = accountService.retrieveById(transaction.getSender());
-        Account receiver = accountService.retrieveById(transaction.getReceiver());
+        AccountDTO sender = accountService.retrieveById(transactionDTO.getSender());
+        AccountDTO receiver = accountService.retrieveById(transactionDTO.getReceiver());
 
-        transactionService.makeTransfer(sender,receiver,transaction.getAmount(), new Date(),transaction.getMessage());
+        transactionService.makeTransfer(sender,receiver, transactionDTO.getAmount(), new Date(), transactionDTO.getMessage());
 
         return "redirect:/make-transfer";
     }
