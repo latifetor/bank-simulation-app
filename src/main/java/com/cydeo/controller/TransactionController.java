@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.UUID;
 
 @Controller
 public class TransactionController {
@@ -63,7 +62,7 @@ public class TransactionController {
     }
 
     @GetMapping("/transaction/{id}")
-    public String getTransactionList(@PathVariable("id")UUID id,Model model){
+    public String getTransactionList(@PathVariable("id") Long id, Model model){
 
         // print out the captured_id
         System.out.println(id);

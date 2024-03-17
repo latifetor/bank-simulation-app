@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 public class TransactionServiceImpl implements TransactionService {
@@ -110,7 +109,7 @@ public class TransactionServiceImpl implements TransactionService {
         findAccountById(sender.getId());
         findAccountById(receiver.getId());
     }
-    private void findAccountById(UUID id) {
+    private void findAccountById(Long id) {
         accountRepository.findById(id);
     }
 
@@ -126,7 +125,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDTO> findTransactionListById(UUID id) {
+    public List<TransactionDTO> findTransactionListById(Long id) {
         return transactionRepository.findTransactionListByAccountId(id);
     }
 }
