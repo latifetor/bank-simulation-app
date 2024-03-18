@@ -36,6 +36,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<AccountDTO> ListAllAccount() {
+        // we are getting list of account but we need to return list of AccountDTO
+
         return accountRepository.findAll();
     }
 
