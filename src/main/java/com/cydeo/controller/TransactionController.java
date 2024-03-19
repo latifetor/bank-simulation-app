@@ -34,7 +34,7 @@ public class TransactionController {
         //we need to provide empty transaction object
         model.addAttribute("transaction", new TransactionDTO());
         //we need to provide list of all accounts
-        model.addAttribute("accounts",accountService.ListAllAccount());
+        model.addAttribute("accounts",accountService.listAllAccount());
         //we need list of last 10 transactions to fill the table(business logic is missing)
         model.addAttribute("lastTransactions",transactionService.last10Transactions());
 
@@ -47,7 +47,7 @@ public class TransactionController {
     public String makeTransfer(@Valid @ModelAttribute("transaction") TransactionDTO transactionDTO, BindingResult bindingResult, Model model){
 
         if (bindingResult.hasErrors()){
-            model.addAttribute("accounts",accountService.ListAllAccount());
+            model.addAttribute("accounts",accountService.listAllAccount());
             model.addAttribute("lastTransactions",transactionService.last10Transactions());
             return "transaction/make-transfer";
         }
