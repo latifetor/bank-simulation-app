@@ -61,5 +61,12 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(account);
     }
 
+    @Override
+    public AccountDTO retrieveById(Long id) {
+        //find the account entity based on id, then convert it dto and return it
+        return accountMapper.convertToDTO(accountRepository.findById(id).get());
+    }
+
+
 
 }
