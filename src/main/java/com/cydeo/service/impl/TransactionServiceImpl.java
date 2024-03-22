@@ -136,6 +136,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionDTO> findTransactionListById(Long id) {
-        return transactionRepository.findTransactionListByAccountId(id);
+        // get the list of transactions if account_id is involved as a sender or receiver
+        List<Transaction> transactionList = transactionRepository.findTransactionListByAccountId(id);
+        // convert list of entity to dot and return it
+        return transactionList.stream().map(transactionMapper::convertToDTO).collect(Collectors.toList());
     }
 }
