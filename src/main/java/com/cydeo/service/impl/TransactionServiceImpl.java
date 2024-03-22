@@ -39,7 +39,7 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionDTO makeTransfer(AccountDTO sender, AccountDTO receiver, BigDecimal amount, Date creationDate, String message) {
 
         if(!underConstruction) {
-            /** If sender or receiver is null ?
+            /* If sender or receiver is null ?
              *  If sender and receiver is the same account ?
              *  If sender has enough balance to make transfer ?
              *  If both accounts are checking, if not, one of them saving, it needs to be same userId
@@ -49,29 +49,45 @@ public class TransactionServiceImpl implements TransactionService {
             checkAccountOwnership(sender,receiver);
             executeBalanceAndUpdateIfRequired(amount,sender,receiver);
 
-            /**
+            /*
              * after all validations are completed, and money is transferred
              * we need to create Transaction object and save/return it
              */
 
-            TransactionDTO transactionDTO = new TransactionDTO();
+            TransactionDTO transactionDTO = new TransactionDTO(sender,receiver,amount,message,creationDate);
 
             // save into the DB and return it
-            return transactionRepository.save(transactionDTO);
+            transactionRepository.save(transactionMapper.convertToEntity(transactionDTO));
+            return transactionDTO;
         }else {
             throw new UnderConstructionException("App is under construction, please try again later");
         }
     }
 
     private void executeBalanceAndUpdateIfRequired(BigDecimal amount, AccountDTO sender, AccountDTO receiver) {
-        if(checkSenderBalance(sender,amount)) {
-            // update sender and receiver balance
+        if(checkSenderBalance(sender,amount)){
+            //update sender and receiver balance
+            //100 - 80
             sender.setBalance(sender.getBalance().subtract(amount));
-            receiver.setBalance(receiver.getBalance().add(amount));
-        }else {
-            throw new BalanceNotSufficientException("Balance is not enough for this transfer");
 
+            //50 + 80
+            receiver.setBalance(receiver.getBalance().add(amount));
+
+            // get the dto from the database for both sender and receiver, update balance and save it
+            // create accountService updateAccount method and use it for saving.
+            // find sender by id
+            AccountDTO senderAcc = accountService.retrieveById(sender.getId());
+            senderAcc.setBalance(sender.getBalance());
+            accountService.updateAccount(senderAcc);
+
+            AccountDTO receiverAcc = accountService.retrieveById(receiver.getId());
+            receiverAcc.setBalance(receiver.getBalance());
+            accountService.updateAccount(receiverAcc);
+
+        }else{
+            throw new BalanceNotSufficientException("Balance is not enough for this transfer");
         }
+
     }
 
     private boolean checkSenderBalance(AccountDTO sender, BigDecimal amount) {
@@ -113,6 +129,7 @@ public class TransactionServiceImpl implements TransactionService {
         findAccountById(receiver.getId());
     }
     private void findAccountById(Long id) {
+        // call from the accountService directly
         accountService.retrieveById(id);
     }
 
