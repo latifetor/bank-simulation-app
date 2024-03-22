@@ -1,6 +1,7 @@
 package com.cydeo.service.impl;
 
 import com.cydeo.dto.AccountDTO;
+import com.cydeo.entity.Transaction;
 import com.cydeo.enums.AccountType;
 import com.cydeo.exception.AccountOwnershipException;
 import com.cydeo.exception.BadRequestException;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class TransactionServiceImpl implements TransactionService {
@@ -32,7 +34,6 @@ public class TransactionServiceImpl implements TransactionService {
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
     }
-
 
     @Override
     public TransactionDTO makeTransfer(AccountDTO sender, AccountDTO receiver, BigDecimal amount, Date creationDate, String message) {
@@ -115,15 +116,22 @@ public class TransactionServiceImpl implements TransactionService {
         accountService.retrieveById(id);
     }
 
-
     @Override
     public List<TransactionDTO> findAllTransaction() {
-        return transactionRepository.findAll();
+        // get the transaction entity for all and return them as a list of TransactionDTO
+        return transactionRepository.findAll().stream()
+                .map(transactionMapper::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<TransactionDTO> last10Transactions() {
-        return transactionRepository.findLast10Transaction();
+        //we want last 10 latest transaction
+        //write a query to get the result ofr last 10 transaction
+        List<Transaction> last10Transactions = transactionRepository.findLast10Transactions();
+        // convert to dto and return it
+        return last10Transactions.stream().map(transactionMapper::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
