@@ -14,20 +14,20 @@
   <div class="row">
     <div class="col-md-6">
       <div>
-        <form th:object="${transactionDTO}" th:action="@{/transfer}" method="post">
+        <form th:object="${transactionDTO}"  th:action="@{/transfer}" method="post">
           <div class="row">
             <div class="form-group blu-margin">
               <label for="sender" class="col-form-label">Sender</label>
               <select class="form-control" id="sender" th:field="*{sender}">
                 <option th:value="''" th:text="select"></option>
                 <option th:each="accountDTO : ${accounts}" th:value="${accountDTO.id}"
-                th:text="${accountDTO.balance}+'-'+${accountDTO.userId}+'-'+${accountDTO.accountType.name()}"></option>
+                        th:text="${accountDTO.balance}+'-'+${accountDTO.userId}+'-'+${accountDTO.accountType.name()}"></option>
               </select>
               <span th:if="${#fields.hasErrors('sender')}">
-                <ul class="alert alert-danger">
-                    <li th:each="err : ${#fields.errors('sender')}" th:text="${err}"></li>
-                </ul>
-              </span>
+                                    <ul class="alert alert-danger">
+                                        <li th:each="err :${#fields.errors('sender')}" th:text="${err}"></li>
+                                    </ul>
+                                    </span>
             </div>
 
             <div class="form-group blu-margin">
@@ -36,32 +36,33 @@
                 <option th:value="''" th:text="select"></option>
                 <option th:each="accountDTO : ${accounts}" th:value="${accountDTO.id}"
                         th:text="${accountDTO.balance}+'-'+${accountDTO.userId}+'-'+${accountDTO.accountType.name()}"></option>
+
               </select>
               <span th:if="${#fields.hasErrors('receiver')}">
-                <ul class="alert alert-danger">
-                    <li th:each="err : ${#fields.errors('receiver')}" th:text="${err}"></li>
-                </ul>
-              </span>
+                                        <ul class="alert alert-danger">
+                                            <li th:each="err :${#fields.errors('receiver')}" th:text="${err}"></li>
+                                        </ul>
+                                    </span>
             </div>
 
             <div class="form-group blu-margin">
               <label for="amount" class="col-form-label">Amount</label>
               <input type="text" class="form-control" id="amount" placeholder="Amount" th:field="*{amount}">
               <span th:if="${#fields.hasErrors('amount')}">
-                <ul class="alert alert-danger">
-                    <li th:each="err : ${#fields.errors('amount')}" th:text="${err}"></li>
-                </ul>
-              </span>
+                                        <ul class="alert alert-danger">
+                                            <li th:each="err :${#fields.errors('amount')}" th:text="${err}"></li>
+                                        </ul>
+                                    </span>
             </div>
 
             <div class="form-group blu-margin">
               <label for="message" class="col-form-label">Message</label>
               <input type="text" class="form-control" id="message" placeholder="Message" th:field="*{message}">
               <span th:if="${#fields.hasErrors('message')}">
-                <ul class="alert alert-danger">
-                    <li th:each="err : ${#fields.errors('message')}" th:text="${err}"></li>
-                </ul>
-              </span>
+                                        <ul class="alert alert-danger">
+                                            <li th:each="err :${#fields.errors('message')}" th:text="${err}"></li>
+                                        </ul>
+                                    </span>
             </div>
           </div>
           <div class="row">
@@ -83,9 +84,9 @@
           </tr>
           </thead>
           <tbody>
-          <tr th:each="lTransaction : ${lastTransactions}" >
-            <td th:text="${lTransaction.getSender()}"></td>
-            <td th:text="${lTransaction.getReceiver()}"></td>
+          <tr th:each="lTransaction : ${lastTransactions}">
+            <td th:text="${lTransaction.getSender().id}"></td>
+            <td th:text="${lTransaction.getReceiver().id}"></td>
             <td th:text="${lTransaction.getAmount()}"></td>
             <td th:text="${lTransaction.getCreateDate()}"></td>
             <td th:text="${lTransaction.getMessage()}"></td>
