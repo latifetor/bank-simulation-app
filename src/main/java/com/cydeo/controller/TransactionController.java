@@ -55,7 +55,6 @@ public class TransactionController {
         // need to find the Accounts based on the ID that we have and use as a parameter to complete makeTransfer method.
         AccountDTO sender = accountService.retrieveById(transactionDTO.getSender().getId());
         AccountDTO receiver = accountService.retrieveById(transactionDTO.getReceiver().getId());
-
         transactionService.makeTransfer(sender,receiver, transactionDTO.getAmount(), new Date(), transactionDTO.getMessage());
 
         return "redirect:/make-transfer";
