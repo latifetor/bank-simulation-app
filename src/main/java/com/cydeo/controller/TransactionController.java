@@ -37,36 +37,37 @@ public class TransactionController {
         model.addAttribute("accounts",accountService.listAllActiveAccount());
         //we need list of last 10 transactions to fill the table(business logic is missing)
         model.addAttribute("lastTransactions",transactionService.last10Transactions());
-
         return "transaction/make-transfer";
     }
 
-    @PostMapping("/transfer")
-      // write a post method that takes transaction object from the UI
-      // complete the transfer and return the same page
-    public String makeTransfer(@Valid @ModelAttribute("transaction") TransactionDTO transactionDTO, BindingResult bindingResult, Model model){
+    //write a post method that takes transaction object from the UI
+    //complete the transfer and return the same page
 
-        if (bindingResult.hasErrors()){
+    @PostMapping("/transfer")
+    public String makeTransfer(@ModelAttribute("transactionDTO") @Valid TransactionDTO transactionDTO, BindingResult bindingResult, Model model){
+
+        if(bindingResult.hasErrors()){
             model.addAttribute("accounts",accountService.listAllAccount());
             model.addAttribute("lastTransactions",transactionService.last10Transactions());
             return "transaction/make-transfer";
         }
-        // having UUID of accounts but need to provide Account_object to the method
-        // need to find the Accounts based on the ID that we have and use as a parameter to complete makeTransfer method.
+
+        // have UUID of  accounts but I need to provide Account object.
+        // need to find the Accounts based on the ID that I have and use as a parameter to complete makeTransfer method.
         AccountDTO sender = accountService.retrieveById(transactionDTO.getSender().getId());
         AccountDTO receiver = accountService.retrieveById(transactionDTO.getReceiver().getId());
-        transactionService.makeTransfer(sender,receiver, transactionDTO.getAmount(), new Date(), transactionDTO.getMessage());
+        transactionService.makeTransfer(sender,receiver, transactionDTO.getAmount(),new Date(), transactionDTO.getMessage());
 
         return "redirect:/make-transfer";
     }
 
     @GetMapping("/transaction/{id}")
     public String getTransactionList(@PathVariable("id") Long id, Model model){
-
-        // print out the captured_id
+        //print the id
         System.out.println(id);
 
-        // get the list of transaction based on id and return a model attribute
+        //get the list of transactions based on id and return as a model attribute
+        //findTransactionListById
         model.addAttribute("transactions",transactionService.findTransactionListById(id));
 
         return "transaction/transactions";
