@@ -73,6 +73,7 @@ public class TransactionController {
         return "transaction/transactions";
     }
 
-
+    //go to transactions.html
+    //based on size of the transactions either show "No transactions yet" or transactions table
 
 }
