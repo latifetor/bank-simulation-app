@@ -32,7 +32,7 @@ public class TransactionController {
 
         //what we need to provide to make transfer happen
         //we need to provide empty transaction object
-        model.addAttribute("transaction", new TransactionDTO());
+        model.addAttribute("transactionDTO", new TransactionDTO());
         //we need to provide list of all accounts
         model.addAttribute("accounts",accountService.listAllActiveAccount());
         //we need list of last 10 transactions to fill the table(business logic is missing)
