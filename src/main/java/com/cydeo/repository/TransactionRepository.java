@@ -1,44 +1,23 @@
 package com.cydeo.repository;
 
-import com.cydeo.model.Transaction;
+import com.cydeo.dto.TransactionDTO;
+import com.cydeo.entity.Transaction;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Component
-public class TransactionRepository {
+@Repository
+public interface TransactionRepository extends JpaRepository <Transaction, Long> {
+    @Query(value = "SELECT * FROM transactions ORDER BY create_date DESC LIMIT 10", nativeQuery = true)
+    List<Transaction> findLast10Transactions();
 
-    public static List<Transaction> transactionList = new ArrayList<>();
+    @Query("SELECT t FROM Transaction t WHERE t.sender.id = ?1 OR t.receiver.id = ?1")
+    List<Transaction> findTransactionListByAccountId(Long id);
 
-    public Transaction save(Transaction transaction){
-        transactionList.add(transaction);
-        return transaction;
-    }
-
-    public List<Transaction> findAll() {
-        return transactionList;
-
-    }
-
-    public List<Transaction> findLast10Transaction() {
-        // write the stream that sort the transactions based on creation date
-        // and only return 10 of them
-        return transactionList.stream()
-                .sorted(Comparator.comparing(Transaction::getCreateDate).reversed())
-                .limit(10)
-                .collect(Collectors.toList());
-    }
-
-    public List<Transaction> findTransactionListByAccountId(UUID id) {
-
-        // if account id is used either as a Sender or Receiver, returns those transactions
-        return transactionList.stream()
-                .filter(transaction -> transaction.getSender().equals(id) || transaction.getReceiver().equals(id))
-                .collect(Collectors.toList());
-
-    }
 }
